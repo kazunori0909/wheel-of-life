@@ -14,6 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"),
   title: "人生の輪 - Wheel of Life",
   description: "人生の8つの領域における現在の満足度と理想の状態を可視化するコーチングツール",
 };
