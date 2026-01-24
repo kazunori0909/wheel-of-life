@@ -14,8 +14,8 @@ export const CHART_CONFIG: ChartConfig = {
   maxScore: 10,
   width: 500,
   height: 500,
-  radius: 180,
-  labelRadius: 215,
+  radius: 150,
+  labelRadius: 200,
 };
 
 export type EditMode = "current" | "target";

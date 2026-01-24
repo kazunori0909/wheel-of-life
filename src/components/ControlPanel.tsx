@@ -20,7 +20,7 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({ categories, onScoreC
             editMode === 'current' ? 'bg-white text-blue-600 shadow-sm' : 'text-gray-500 hover:text-gray-700'
           }`}
         >
-          現状 (Current)
+          いま
         </button>
         <button
           onClick={() => changeEditMode('target')}
@@ -28,7 +28,7 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({ categories, onScoreC
             editMode === 'target' ? 'bg-white text-blue-600 shadow-sm' : 'text-gray-500 hover:text-gray-700'
           }`}
         >
-          理想 (Ideal)
+          こうなりたい
         </button>
       </div>
       {categories.map((cat, index) => (
