@@ -73,25 +73,32 @@ export const WheelChart: React.FC<WheelChartProps> = ({
           })}
         </g>
 
-        {/* スライス（データ） */}
+        {/* 現状スコア（1層目：奥） */}
         <g>
           {slices.map((slice) => (
-            <React.Fragment key={slice.id}>
-              <path
-                d={slice.path}
-                fill={slice.color}
-                className="fill-opacity-60 hover:fill-opacity-80 transition-all duration-300 ease-out"
-                stroke="none"
-              />
-              <path
-                d={slice.targetPath}
-                fill="none"
-                stroke={slice.color}
-                strokeWidth="2"
-                strokeDasharray="4,2"
-                className="pointer-events-none opacity-80"
-              />
-            </React.Fragment>
+            <path
+              key={`current-${slice.id}`}
+              d={slice.path}
+              fill={slice.color}
+              fillOpacity={0.5}
+              className="transition-all duration-300 ease-out"
+              stroke="none"
+            />
+          ))}
+        </g>
+
+        {/* 理想スコア（2層目：手前） */}
+        <g>
+          {slices.map((slice) => (
+            <path
+              key={`target-${slice.id}`}
+              d={slice.targetPath}
+              fill="none"
+              stroke={slice.color}
+              strokeWidth="3"
+              strokeDasharray="4 4"
+              className="pointer-events-none transition-all duration-300 ease-out"
+            />
           ))}
         </g>
 
