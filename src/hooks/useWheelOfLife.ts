@@ -20,6 +20,8 @@ export const CHART_CONFIG: ChartConfig = {
 
 export type EditMode = "current" | "target";
 
+const CATEGORY_KEYS = ['job', 'money', 'health', 'family', 'relationship', 'learning', 'fun', 'environment'];
+
 // Define extended type locally to ensure type safety without relying on external type updates
 type WheelCategory = Category & { targetScore: number };
 
@@ -29,6 +31,7 @@ export const useWheelOfLife = () => {
     CATEGORIES_DATA.map((c, i) => ({
       id: i,
       label: c.label,
+      key: CATEGORY_KEYS[i],
       color: c.color,
       score: INITIAL_SCORE,
       targetScore: INITIAL_SCORE,
@@ -49,8 +52,9 @@ export const useWheelOfLife = () => {
           const parsed: unknown = JSON.parse(saved);
           if (Array.isArray(parsed)) {
             // Ensure targetScore exists for backward compatibility
-            const migrated = (parsed as Array<Category & { targetScore?: number }>).map((c) => ({
+            const migrated = (parsed as Array<Category & { targetScore?: number; key?: string }>).map((c, i) => ({
               ...c,
+              key: c.key || CATEGORY_KEYS[i],
               targetScore: typeof c.targetScore === "number" ? c.targetScore : (c.score || INITIAL_SCORE),
             }));
             setCategories(migrated as WheelCategory[]);
@@ -62,7 +66,10 @@ export const useWheelOfLife = () => {
           } else if (parsed && typeof parsed === 'object') {
             // New format
             const data = parsed as { categories: WheelCategory[], isTargetInitialized: boolean };
-            setCategories(data.categories);
+            setCategories(data.categories.map((c, i) => ({
+              ...c,
+              key: c.key || CATEGORY_KEYS[i]
+            })));
             setIsTargetInitialized(data.isTargetInitialized);
           }
         } catch (e) {
@@ -101,6 +108,7 @@ export const useWheelOfLife = () => {
       setCategories(CATEGORIES_DATA.map((c, i) => ({
         id: i,
         label: c.label,
+        key: CATEGORY_KEYS[i],
         color: c.color,
         score: INITIAL_SCORE,
         targetScore: INITIAL_SCORE,

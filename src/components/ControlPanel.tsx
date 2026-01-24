@@ -1,6 +1,7 @@
 import React from 'react';
 import { Category } from '@/types';
 import { EditMode } from '@/hooks/useWheelOfLife';
+import { useLanguage } from '@/context/LanguageContext';
 
 interface ControlPanelProps {
   categories: (Category & { targetScore: number })[];
@@ -11,6 +12,10 @@ interface ControlPanelProps {
 }
 
 export const ControlPanel: React.FC<ControlPanelProps> = ({ categories, onScoreChange, editMode, changeEditMode = () => {}, resetData }) => {
+  const { t } = useLanguage();
+  const categoriesDict = t('categories');
+  const modesDict = t('modes');
+
   return (
     <div className="flex flex-col gap-4 w-full min-w-[300px] flex-1">
       <div className="flex bg-gray-100 p-1 rounded-lg mb-2">
@@ -20,7 +25,7 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({ categories, onScoreC
             editMode === 'current' ? 'bg-white text-blue-600 shadow-sm' : 'text-gray-500 hover:text-gray-700'
           }`}
         >
-          いま
+          {modesDict.current}
         </button>
         <button
           onClick={() => changeEditMode('target')}
@@ -28,13 +33,13 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({ categories, onScoreC
             editMode === 'target' ? 'bg-white text-blue-600 shadow-sm' : 'text-gray-500 hover:text-gray-700'
           }`}
         >
-          こうなりたい
+          {modesDict.ideal}
         </button>
       </div>
       {categories.map((cat, index) => (
         <div key={cat.id} className="flex items-center justify-between pb-1 border-b border-gray-100">
           <label className="font-bold text-sm text-gray-700 w-32 shrink-0">
-            {cat.label}
+            {categoriesDict[cat.key as keyof typeof categoriesDict]}
           </label>
           <div className="flex flex-1 items-center gap-2">
             <input
@@ -58,7 +63,7 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({ categories, onScoreC
           onClick={resetData}
           className="text-xs text-red-400 hover:text-red-600 underline transition-colors"
         >
-          データをリセット
+          {t('resetData')}
         </button>
       </div>
     </div>

@@ -1,6 +1,7 @@
 import React from 'react';
 import { ChartConfig } from '@/types';
 import { EditMode } from '@/hooks/useWheelOfLife';
+import { useLanguage } from '@/context/LanguageContext';
 
 interface WheelChartProps {
   svgRef: React.RefObject<SVGSVGElement | null>;
@@ -9,6 +10,7 @@ interface WheelChartProps {
     id: number;
     color: string;
     label: string;
+    key: string;
     path: string;
     targetPath: string;
     labelPos: { x: number; y: number };
@@ -31,6 +33,9 @@ export const WheelChart: React.FC<WheelChartProps> = ({
   const { width, height, radius, maxScore } = config;
   const centerX = width / 2;
   const centerY = height / 2;
+
+  const { t } = useLanguage();
+  const categoriesDict = t('categories');
 
   return (
     <div className="w-full max-w-[500px] aspect-square relative select-none">
@@ -120,7 +125,7 @@ export const WheelChart: React.FC<WheelChartProps> = ({
                     textAnchor="middle"
                     dominantBaseline="middle"
                 >
-                    {slice.label}
+                    {categoriesDict[slice.key as keyof typeof categoriesDict]}
                 </text>
             ))}
         </g>
