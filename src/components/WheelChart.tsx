@@ -1,4 +1,7 @@
+'use client';
+
 import React from 'react';
+import { motion } from 'framer-motion';
 import { ChartConfig } from '@/types';
 import { EditMode } from '@/hooks/useWheelOfLife';
 import { useLanguage } from '@/context/LanguageContext';
@@ -81,9 +84,12 @@ export const WheelChart: React.FC<WheelChartProps> = ({
         {/* 現状スコア（1層目：奥） */}
         <g>
           {slices.map((slice) => (
-            <path
+            <motion.path
               key={`current-${slice.id}`}
               d={slice.path}
+              initial={{ d: slice.path }}
+              animate={{ d: slice.path }}
+              transition={{ type: "spring", stiffness: 300, damping: 25 }}
               fill={slice.color}
               fillOpacity={0.5}
               className="transition-all duration-300 ease-out"
@@ -96,9 +102,12 @@ export const WheelChart: React.FC<WheelChartProps> = ({
         {(editMode === 'target' || isTargetInitialized) && (
           <g>
             {slices.map((slice) => (
-              <path
+              <motion.path
                 key={`target-${slice.id}`}
                 d={slice.targetPath}
+                initial={{ d: slice.targetPath }}
+                animate={{ d: slice.targetPath }}
+                transition={{ type: "spring", stiffness: 300, damping: 25 }}
                 fill="none"
                 stroke={slice.color}
                 strokeWidth="3"
