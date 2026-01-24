@@ -13,7 +13,9 @@ export default function WheelOfLifePage() {
     updateScore, 
     handleChartInteraction,
     editMode,
-    setEditMode
+    changeEditMode,
+    resetData,
+    isTargetInitialized
   } = useWheelOfLife();
 
   return (
@@ -26,7 +28,8 @@ export default function WheelOfLifePage() {
           categories={categories} 
           onScoreChange={updateScore} 
           editMode={editMode}
-          setEditMode={setEditMode}
+          changeEditMode={changeEditMode}
+          resetData={resetData}
         />
 
         {/* 右側：チャート */}
@@ -36,6 +39,8 @@ export default function WheelOfLifePage() {
           slices={chartData.slices}
           guides={chartData.guides}
           onInteract={handleChartInteraction}
+          editMode={editMode}
+          isTargetInitialized={isTargetInitialized}
         />
       </div>
     </main>

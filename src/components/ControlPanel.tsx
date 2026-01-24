@@ -6,15 +6,16 @@ interface ControlPanelProps {
   categories: (Category & { targetScore: number })[];
   onScoreChange: (index: number, score: number) => void;
   editMode: EditMode;
-  setEditMode: (mode: EditMode) => void;
+  changeEditMode: (mode: EditMode) => void;
+  resetData: () => void;
 }
 
-export const ControlPanel: React.FC<ControlPanelProps> = ({ categories, onScoreChange, editMode, setEditMode = () => {} }) => {
+export const ControlPanel: React.FC<ControlPanelProps> = ({ categories, onScoreChange, editMode, changeEditMode = () => {}, resetData }) => {
   return (
     <div className="flex flex-col gap-4 w-full min-w-[300px] flex-1">
       <div className="flex bg-gray-100 p-1 rounded-lg mb-2">
         <button
-          onClick={() => setEditMode('current')}
+          onClick={() => changeEditMode('current')}
           className={`flex-1 py-2 px-4 rounded-md text-sm font-bold transition-all ${
             editMode === 'current' ? 'bg-white text-blue-600 shadow-sm' : 'text-gray-500 hover:text-gray-700'
           }`}
@@ -22,7 +23,7 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({ categories, onScoreC
           現状 (Current)
         </button>
         <button
-          onClick={() => setEditMode('target')}
+          onClick={() => changeEditMode('target')}
           className={`flex-1 py-2 px-4 rounded-md text-sm font-bold transition-all ${
             editMode === 'target' ? 'bg-white text-blue-600 shadow-sm' : 'text-gray-500 hover:text-gray-700'
           }`}
@@ -51,6 +52,15 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({ categories, onScoreC
           </div>
         </div>
       ))}
+
+      <div className="mt-4 flex justify-end">
+        <button
+          onClick={resetData}
+          className="text-xs text-red-400 hover:text-red-600 underline transition-colors"
+        >
+          データをリセット
+        </button>
+      </div>
     </div>
   );
 };

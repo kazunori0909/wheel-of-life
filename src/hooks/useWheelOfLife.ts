@@ -35,6 +35,7 @@ export const useWheelOfLife = () => {
     }))
   );
   const [editMode, setEditMode] = useState<EditMode>("current");
+  const [isTargetInitialized, setIsTargetInitialized] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
 
   const svgRef = useRef<SVGSVGElement>(null);
@@ -53,6 +54,16 @@ export const useWheelOfLife = () => {
               targetScore: typeof c.targetScore === "number" ? c.targetScore : (c.score || INITIAL_SCORE),
             }));
             setCategories(migrated as WheelCategory[]);
+            
+            // Check if there are any existing target scores different from current scores
+            // to prevent overwriting user's previous data on migration
+            const hasCustomTargets = migrated.some((c) => c.score !== c.targetScore);
+            if (hasCustomTargets) setIsTargetInitialized(true);
+          } else if (parsed && typeof parsed === 'object') {
+            // New format
+            const data = parsed as { categories: WheelCategory[], isTargetInitialized: boolean };
+            setCategories(data.categories);
+            setIsTargetInitialized(data.isTargetInitialized);
           }
         } catch (e) {
           console.error("Failed to load data", e);
@@ -66,9 +77,38 @@ export const useWheelOfLife = () => {
   // Save to LocalStorage on update
   useEffect(() => {
     if (isLoaded) {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(categories));
+      const data = {
+        categories,
+        isTargetInitialized
+      };
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
     }
-  }, [categories, isLoaded]);
+  }, [categories, isTargetInitialized, isLoaded]);
+
+  // Action: モード切り替え（理想モードに入るときに現状スコアをコピー）
+  const changeEditMode = useCallback((mode: EditMode) => {
+    if (mode === 'target' && !isTargetInitialized) {
+      setCategories((prev) => prev.map((c) => ({ ...c, targetScore: c.score })));
+      setIsTargetInitialized(true);
+    }
+    setEditMode(mode);
+  }, [isTargetInitialized]);
+
+  // Action: 全リセット
+  const resetData = useCallback(() => {
+    if (window.confirm('すべてのデータをリセットして初期状態に戻しますか？')) {
+      localStorage.removeItem(STORAGE_KEY);
+      setCategories(CATEGORIES_DATA.map((c, i) => ({
+        id: i,
+        label: c.label,
+        color: c.color,
+        score: INITIAL_SCORE,
+        targetScore: INITIAL_SCORE,
+      })));
+      setEditMode('current');
+      setIsTargetInitialized(false);
+    }
+  }, []);
 
   // Action: スコア更新
   const updateScore = useCallback((index: number, newScore: number) => {
@@ -124,6 +164,8 @@ export const useWheelOfLife = () => {
     updateScore,
     handleChartInteraction,
     editMode,
-    setEditMode,
+    changeEditMode,
+    resetData,
+    isTargetInitialized,
   };
 };

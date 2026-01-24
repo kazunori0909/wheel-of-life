@@ -1,5 +1,6 @@
 import React from 'react';
 import { ChartConfig } from '@/types';
+import { EditMode } from '@/hooks/useWheelOfLife';
 
 interface WheelChartProps {
   svgRef: React.RefObject<SVGSVGElement | null>;
@@ -14,6 +15,8 @@ interface WheelChartProps {
   }>;
   guides: number[];
   onInteract: (e: React.MouseEvent | React.TouchEvent) => void;
+  editMode: EditMode;
+  isTargetInitialized: boolean;
 }
 
 export const WheelChart: React.FC<WheelChartProps> = ({
@@ -22,6 +25,8 @@ export const WheelChart: React.FC<WheelChartProps> = ({
   slices,
   guides,
   onInteract,
+  editMode,
+  isTargetInitialized,
 }) => {
   const { width, height, radius, maxScore } = config;
   const centerX = width / 2;
@@ -88,19 +93,21 @@ export const WheelChart: React.FC<WheelChartProps> = ({
         </g>
 
         {/* 理想スコア（2層目：手前） */}
-        <g>
-          {slices.map((slice) => (
-            <path
-              key={`target-${slice.id}`}
-              d={slice.targetPath}
-              fill="none"
-              stroke={slice.color}
-              strokeWidth="3"
-              strokeDasharray="4 4"
-              className="pointer-events-none transition-all duration-300 ease-out"
-            />
-          ))}
-        </g>
+        {(editMode === 'target' || isTargetInitialized) && (
+          <g>
+            {slices.map((slice) => (
+              <path
+                key={`target-${slice.id}`}
+                d={slice.targetPath}
+                fill="none"
+                stroke={slice.color}
+                strokeWidth="3"
+                strokeDasharray="4 4"
+                className="pointer-events-none transition-all duration-300 ease-out"
+              />
+            ))}
+          </g>
+        )}
 
         {/* ラベル */}
         <g>
