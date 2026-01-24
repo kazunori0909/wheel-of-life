@@ -1,5 +1,5 @@
-import { useState, useCallback, useRef } from "react";
-import { Category, ChartConfig } from "@/types";
+import React, { useState, useCallback, useRef, useEffect } from "react";
+import type { Category, ChartConfig } from "@/types";
 import {
   CATEGORIES_DATA,
   calculateScoreFromClick,
@@ -8,6 +8,7 @@ import {
 } from "@/utils/wheelMath";
 
 const INITIAL_SCORE = 5;
+const STORAGE_KEY = 'wheel-of-life-data';
 
 export const CHART_CONFIG: ChartConfig = {
   maxScore: 10,
@@ -27,8 +28,35 @@ export const useWheelOfLife = () => {
       score: INITIAL_SCORE,
     }))
   );
+  const [isLoaded, setIsLoaded] = useState(false);
 
   const svgRef = useRef<SVGSVGElement>(null);
+
+  // Load from LocalStorage on mount
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) {
+        try {
+          const parsed: unknown = JSON.parse(saved);
+          if (Array.isArray(parsed)) {
+            setCategories(parsed as Category[]);
+          }
+        } catch (e) {
+          console.error("Failed to load data", e);
+        }
+      }
+      setIsLoaded(true);
+    }, 0);
+    return () => clearTimeout(timer);
+  }, []);
+
+  // Save to LocalStorage on update
+  useEffect(() => {
+    if (isLoaded) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(categories));
+    }
+  }, [categories, isLoaded]);
 
   // Action: スコア更新
   const updateScore = useCallback((index: number, newScore: number) => {
@@ -42,8 +70,9 @@ export const useWheelOfLife = () => {
     (e: React.MouseEvent | React.TouchEvent) => {
       if (!svgRef.current) return;
 
-      const clientX = "touches" in e ? e.touches[0].clientX : e.clientX;
-      const clientY = "touches" in e ? e.touches[0].clientY : e.clientY;
+      const isTouch = "touches" in e;
+      const clientX = isTouch ? (e as React.TouchEvent).touches[0].clientX : (e as React.MouseEvent).clientX;
+      const clientY = isTouch ? (e as React.TouchEvent).touches[0].clientY : (e as React.MouseEvent).clientY;
 
       const rect = svgRef.current.getBoundingClientRect();
       const result = calculateScoreFromClick(
