@@ -11,7 +11,9 @@ export default function WheelOfLifePage() {
     chartData, 
     svgRef, 
     updateScore, 
-    handleChartInteraction 
+    handleChartInteraction,
+    editMode,
+    setEditMode
   } = useWheelOfLife();
 
   return (
@@ -23,6 +25,8 @@ export default function WheelOfLifePage() {
         <ControlPanel 
           categories={categories} 
           onScoreChange={updateScore} 
+          editMode={editMode}
+          setEditMode={setEditMode}
         />
 
         {/* 右側：チャート */}

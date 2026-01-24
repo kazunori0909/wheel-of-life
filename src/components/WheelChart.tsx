@@ -9,6 +9,7 @@ interface WheelChartProps {
     color: string;
     label: string;
     path: string;
+    targetPath: string;
     labelPos: { x: number; y: number };
   }>;
   guides: number[];
@@ -75,13 +76,22 @@ export const WheelChart: React.FC<WheelChartProps> = ({
         {/* スライス（データ） */}
         <g>
           {slices.map((slice) => (
-            <path
-              key={slice.id}
-              d={slice.path}
-              fill={slice.color}
-              className="fill-opacity-60 hover:fill-opacity-80 transition-all duration-300 ease-out"
-              stroke="none"
-            />
+            <React.Fragment key={slice.id}>
+              <path
+                d={slice.path}
+                fill={slice.color}
+                className="fill-opacity-60 hover:fill-opacity-80 transition-all duration-300 ease-out"
+                stroke="none"
+              />
+              <path
+                d={slice.targetPath}
+                fill="none"
+                stroke={slice.color}
+                strokeWidth="2"
+                strokeDasharray="4,2"
+                className="pointer-events-none opacity-80"
+              />
+            </React.Fragment>
           ))}
         </g>
 

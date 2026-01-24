@@ -18,16 +18,23 @@ export const CHART_CONFIG: ChartConfig = {
   labelRadius: 215,
 };
 
+export type EditMode = "current" | "target";
+
+// Define extended type locally to ensure type safety without relying on external type updates
+type WheelCategory = Category & { targetScore: number };
+
 export const useWheelOfLife = () => {
   // State: カテゴリデータ
-  const [categories, setCategories] = useState<Category[]>(
+  const [categories, setCategories] = useState<WheelCategory[]>(
     CATEGORIES_DATA.map((c, i) => ({
       id: i,
       label: c.label,
       color: c.color,
       score: INITIAL_SCORE,
+      targetScore: INITIAL_SCORE,
     }))
   );
+  const [editMode, setEditMode] = useState<EditMode>("current");
   const [isLoaded, setIsLoaded] = useState(false);
 
   const svgRef = useRef<SVGSVGElement>(null);
@@ -40,7 +47,12 @@ export const useWheelOfLife = () => {
         try {
           const parsed: unknown = JSON.parse(saved);
           if (Array.isArray(parsed)) {
-            setCategories(parsed as Category[]);
+            // Ensure targetScore exists for backward compatibility
+            const migrated = (parsed as Array<Category & { targetScore?: number }>).map((c) => ({
+              ...c,
+              targetScore: typeof c.targetScore === "number" ? c.targetScore : (c.score || INITIAL_SCORE),
+            }));
+            setCategories(migrated as WheelCategory[]);
           }
         } catch (e) {
           console.error("Failed to load data", e);
@@ -61,9 +73,14 @@ export const useWheelOfLife = () => {
   // Action: スコア更新
   const updateScore = useCallback((index: number, newScore: number) => {
     setCategories((prev) =>
-      prev.map((c, i) => (i === index ? { ...c, score: newScore } : c))
+      prev.map((c, i) => {
+        if (i !== index) return c;
+        return editMode === "current"
+          ? { ...c, score: newScore }
+          : { ...c, targetScore: newScore };
+      })
     );
-  }, []);
+  }, [editMode]);
 
   // Action: チャート操作
   const handleChartInteraction = useCallback(
@@ -94,6 +111,7 @@ export const useWheelOfLife = () => {
     slices: categories.map((c, i) => ({
       ...c,
       path: calculateSlicePath(i, c.score, categories.length, CHART_CONFIG),
+      targetPath: calculateSlicePath(i, c.targetScore, categories.length, CHART_CONFIG),
       labelPos: calculateLabelPosition(i, categories.length, CHART_CONFIG),
     })),
     guides: Array.from({ length: CHART_CONFIG.maxScore }, (_, i) => i + 1),
@@ -105,5 +123,7 @@ export const useWheelOfLife = () => {
     svgRef,
     updateScore,
     handleChartInteraction,
+    editMode,
+    setEditMode,
   };
 };
