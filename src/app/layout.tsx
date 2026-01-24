@@ -14,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "人生の輪",
-  description: "人生の輪",
+  title: "人生の輪 - Wheel of Life",
+  description: "人生の8つの領域における現在の満足度と理想の状態を可視化するコーチングツール",
 };
 
 export default function RootLayout({
