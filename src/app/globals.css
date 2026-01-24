@@ -1,0 +1,10 @@
+@import "tailwindcss";
+
+/* 今回のアプリはページ側で背景色を指定しているため、
+  グローバルな色設定（ダークモードなど）は一旦削除して
+  シンプルにしておきます。
+*/
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+}
