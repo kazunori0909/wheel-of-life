@@ -21,7 +21,7 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const t = <K extends keyof Translations>(key: K): Translations[K] => {
-    return translations[language][key];
+    return translations[language][key] as Translations[K];
   };
 
   return (
