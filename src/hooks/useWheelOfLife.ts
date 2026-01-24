@@ -159,7 +159,9 @@ export const useWheelOfLife = () => {
     slices: categories.map((c, i) => ({
       ...c,
       path: calculateSlicePath(i, c.score, categories.length, CHART_CONFIG),
-      targetPath: calculateSlicePath(i, c.targetScore, categories.length, CHART_CONFIG),
+      targetPath: c.score === c.targetScore
+        ? ""
+        : calculateSlicePath(i, c.targetScore, categories.length, CHART_CONFIG),
       labelPos: calculateLabelPosition(i, categories.length, CHART_CONFIG),
     })),
     guides: Array.from({ length: CHART_CONFIG.maxScore }, (_, i) => i + 1),

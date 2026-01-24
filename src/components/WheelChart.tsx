@@ -138,7 +138,7 @@ export const WheelChart: React.FC<WheelChartProps> = ({
         <circle
           cx={centerX}
           cy={centerY}
-          r={radius + 50}
+          r={radius + 30}
           fill="transparent"
           className="cursor-pointer"
           onMouseDown={onInteract}
