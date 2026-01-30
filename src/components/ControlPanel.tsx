@@ -45,11 +45,11 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({ categories, onScoreC
         </button>
       </div>
       {categories.map((cat, index) => (
-        <div key={cat.id} className="flex flex-col border-b border-gray-100 pb-1">
+        <div key={cat.id} className="flex flex-col border-b border-gray-100 pb-1 touch-pan-y">
           <div className="flex items-center justify-between">
             <button
               onClick={() => toggleInfo(cat.key)}
-              className="flex items-center gap-1 w-32 shrink-0 text-left group"
+              className="flex items-center gap-1 w-32 shrink-0 text-left group touch-manipulation"
               type="button"
             >
               <span className="font-bold text-sm text-gray-700">
@@ -80,7 +80,7 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({ categories, onScoreC
                 step="1"
                 value={editMode === 'current' ? cat.score : cat.targetScore}
                 onChange={(e) => onScoreChange(index, Number(e.target.value))}
-                className="flex-1 cursor-pointer accent-blue-500 h-2 bg-gray-200 rounded-lg appearance-none"
+                className="flex-1 cursor-pointer accent-blue-500 h-2 bg-gray-200 rounded-lg appearance-none touch-none"
               />
               <span className="font-bold text-blue-500 w-6 text-right">
                 {editMode === 'current' ? cat.score : cat.targetScore}
