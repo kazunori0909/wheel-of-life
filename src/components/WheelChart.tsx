@@ -45,8 +45,7 @@ export const WheelChart: React.FC<WheelChartProps> = ({
       <svg
         ref={svgRef}
         viewBox={`0 0 ${width} ${height}`}
-        className="w-full h-full overflow-visible"
-        style={{ touchAction: 'none' }}
+        className="w-full h-full overflow-visible touch-pan-y"
       >
         {/* ガイド（同心円） */}
         <g>
@@ -140,7 +139,7 @@ export const WheelChart: React.FC<WheelChartProps> = ({
           cy={centerY}
           r={radius + 30}
           fill="transparent"
-          className="cursor-pointer"
+          className="cursor-pointer touch-none"
           onMouseDown={onInteract}
           onTouchStart={(e) => onInteract(e)}
         />
