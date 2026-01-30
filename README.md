@@ -35,7 +35,6 @@
 - [TypeScript](https://www.typescriptlang.org/)
 - [Tailwind CSS](https://tailwindcss.com/)
 - [Framer Motion](https://www.framer.com/motion/) (アニメーション)
-- [html-to-image](https://github.com/bubkoo/html-to-image) (画像生成)
 
 **環境・デプロイ**
 - Docker (DevContainer)
