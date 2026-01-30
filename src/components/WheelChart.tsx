@@ -125,7 +125,7 @@ export const WheelChart: React.FC<WheelChartProps> = ({
                     key={slice.id}
                     x={slice.labelPos.x}
                     y={slice.labelPos.y}
-                    className="text-[20px] font-medium fill-gray-600 pointer-events-none"
+                    className="text-[20px] font-medium fill-gray-600 pointer-events-none select-none"
                     textAnchor="middle"
                     dominantBaseline="middle"
                 >
