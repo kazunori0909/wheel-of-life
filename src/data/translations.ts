@@ -26,6 +26,8 @@ export const translations = {
       environment: "自宅や職場の快適さ、住んでいる地域の安全性や利便性。",
     },
     resetData: "データをリセット",
+    syncTarget: "いまの状態に合わせる",
+    resetConfirm: "すべてのデータをリセットして初期状態に戻しますか？",
   },
   en: {
     title: "Wheel of Life",
@@ -54,6 +56,8 @@ export const translations = {
       environment: "Your home environment, workplace, and physical surroundings.",
     },
     resetData: "Reset Data",
+    syncTarget: "Sync Ideal to Current",
+    resetConfirm: "Are you sure you want to reset all data to the initial state?",
   },
 } as const;
 

@@ -6,6 +6,7 @@ import {
   calculateSlicePath,
   calculateLabelPosition,
 } from "@/utils/wheelMath";
+import { useLanguage } from '@/context/LanguageContext';
 
 const INITIAL_SCORE = 5;
 const STORAGE_KEY = 'wheel-of-life-data';
@@ -26,6 +27,7 @@ const CATEGORY_KEYS = ['job', 'money', 'health', 'family', 'relationship', 'lear
 type WheelCategory = Category & { targetScore: number };
 
 export const useWheelOfLife = () => {
+  const { t } = useLanguage();
   // State: カテゴリデータ
   const [categories, setCategories] = useState<WheelCategory[]>(
     CATEGORIES_DATA.map((c, i) => ({
@@ -103,7 +105,7 @@ export const useWheelOfLife = () => {
 
   // Action: 全リセット
   const resetData = useCallback(() => {
-    if (window.confirm('すべてのデータをリセットして初期状態に戻しますか？')) {
+    if (window.confirm(t('resetConfirm'))) {
       localStorage.removeItem(STORAGE_KEY);
       setCategories(CATEGORIES_DATA.map((c, i) => ({
         id: i,
@@ -116,6 +118,11 @@ export const useWheelOfLife = () => {
       setEditMode('current');
       setIsTargetInitialized(false);
     }
+  }, [t]);
+
+  const syncTargetToCurrent = useCallback(() => {
+    setCategories((prev) => prev.map((c) => ({ ...c, targetScore: c.score })));
+    setIsTargetInitialized(true);
   }, []);
 
   // Action: スコア更新
@@ -176,6 +183,7 @@ export const useWheelOfLife = () => {
     editMode,
     changeEditMode,
     resetData,
+    syncTargetToCurrent,
     isTargetInitialized,
   };
 };
