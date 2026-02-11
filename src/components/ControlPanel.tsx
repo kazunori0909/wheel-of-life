@@ -10,9 +10,10 @@ interface ControlPanelProps {
   editMode: EditMode;
   changeEditMode: (mode: EditMode) => void;
   resetData: () => void;
+  syncTargetToCurrent: () => void;
 }
 
-export const ControlPanel: React.FC<ControlPanelProps> = ({ categories, onScoreChange, editMode, changeEditMode = () => {}, resetData }) => {
+export const ControlPanel: React.FC<ControlPanelProps> = ({ categories, onScoreChange, editMode, changeEditMode = () => {}, resetData, syncTargetToCurrent }) => {
   const { t } = useLanguage();
   const categoriesDict = t('categories');
   const modesDict = t('modes');
@@ -104,7 +105,15 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({ categories, onScoreC
         </div>
       ))}
 
-      <div className="mt-4 flex justify-end">
+      <div className="mt-4 flex justify-end gap-4">
+        {editMode === 'target' && (
+          <button
+            onClick={syncTargetToCurrent}
+            className="text-xs text-blue-400 hover:text-blue-600 underline transition-colors"
+          >
+            {t('syncTarget')}
+          </button>
+        )}
         <button
           onClick={resetData}
           className="text-xs text-red-400 hover:text-red-600 underline transition-colors"

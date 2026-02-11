@@ -16,6 +16,7 @@ export default function WheelOfLifePage() {
     editMode,
     changeEditMode,
     resetData,
+    syncTargetToCurrent,
     isTargetInitialized
   } = useWheelOfLife();
 
@@ -42,6 +43,7 @@ export default function WheelOfLifePage() {
           editMode={editMode}
           changeEditMode={changeEditMode}
           resetData={resetData}
+          syncTargetToCurrent={syncTargetToCurrent}
         />
 
         {/* 右側：チャート */}
