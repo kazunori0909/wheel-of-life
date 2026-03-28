@@ -20,6 +20,7 @@
 
 - **直感的な操作**: スライダーを動かすだけで、リアルタイムにチャートが変化します。
 - **現状 と 理想**: 「いま (Current)」と「こうなりたい (Ideal)」の2つのスコアを重ねて表示し、ギャップを可視化します。
+- **画像として保存**: 振り返りやSNSでのシェア用に、現在のグラフと説明文を含んだ画像（PC用横長 / スマホ用縦長）をダウンロードできます。
 - **多言語対応**: 日本語と英語 (English) をワンクリックで切り替え可能です。
 - **データの保存**: ブラウザのローカルストレージにデータを自動保存。閉じた後も続きから再開できます。
 - **レスポンシブデザイン**: PC、タブレット、スマートフォン、あらゆるデバイスで快適に動作します。
@@ -35,6 +36,7 @@
 - [TypeScript](https://www.typescriptlang.org/)
 - [Tailwind CSS](https://tailwindcss.com/)
 - [Framer Motion](https://www.framer.com/motion/) (アニメーション)
+- [html-to-image](https://github.com/bubkoo/html-to-image) (DOMから画像へのエクスポート)
 
 **環境・デプロイ**
 - Docker (DevContainer)
