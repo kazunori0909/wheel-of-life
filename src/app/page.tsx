@@ -25,34 +25,59 @@ export default function WheelOfLifePage() {
 
   const { t, language, toggleLanguage } = useLanguage();
   
-  const exportRef = useRef<HTMLDivElement>(null);
-  const [exportLayout, setExportLayout] = useState<'landscape' | 'portrait'>('landscape');
+  const exportRefLandscape = useRef<HTMLDivElement>(null);
+  const exportRefPortrait = useRef<HTMLDivElement>(null);
   const [isExporting, setIsExporting] = useState(false);
 
   const handleExport = async (layout: 'landscape' | 'portrait') => {
-    if (isExporting || !exportRef.current) return;
+    const targetRef = layout === 'landscape' ? exportRefLandscape : exportRefPortrait;
+    if (isExporting || !targetRef.current) return;
+    
     setIsExporting(true);
-    setExportLayout(layout);
 
-    // Give React a tick to update the DOM layout class before capturing
-    setTimeout(async () => {
-      try {
-        if (!exportRef.current) return;
-        const dataUrl = await toPng(exportRef.current, {
-          cacheBust: true,
-          pixelRatio: 2,
-          quality: 1,
-        });
-        const link = document.createElement('a');
-        link.download = `wheel-of-life-${layout}.png`;
-        link.href = dataUrl;
-        link.click();
-      } catch (err) {
-        console.error('Failed to export image', err);
-      } finally {
-        setIsExporting(false);
+    try {
+      const dataUrl = await toPng(targetRef.current, {
+        cacheBust: true,
+        pixelRatio: 2,
+        quality: 1,
+      });
+
+      // iOS etc: Use Web Share API if possible
+      // Checking for mobile devices to favor share sheet, while PC favors direct download
+      const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+      
+      if (isMobile && navigator.share) {
+        const response = await fetch(dataUrl);
+        const blob = await response.blob();
+        const file = new File([blob], `wheel-of-life-${layout}.png`, { type: 'image/png' });
+
+        if (navigator.canShare && navigator.canShare({ files: [file] })) {
+          try {
+            await navigator.share({
+              title: 'Wheel of Life',
+              files: [file]
+            });
+            return; // 共有成功、もしくはユーザーが完了したので終了
+          } catch (shareErr) {
+            console.log('Share canceled or failed', shareErr);
+            // AbortErrorはユーザーがキャンセルした場合なので通常のダウンロードに進ませない
+            if (shareErr instanceof Error && shareErr.name === 'AbortError') {
+               return;
+            }
+          }
+        }
       }
-    }, 100);
+
+      // フォールバック: 通常のダウンロード
+      const link = document.createElement('a');
+      link.download = `wheel-of-life-${layout}.png`;
+      link.href = dataUrl;
+      link.click();
+    } catch (err) {
+      console.error('Failed to export image', err);
+    } finally {
+      setIsExporting(false);
+    }
   };
 
   return (
@@ -114,8 +139,16 @@ export default function WheelOfLifePage() {
       {/* 非表示の画像保存用コンテナ */}
       <div className={styles.offscreen}>
         <ExportView
-          ref={exportRef}
-          layout={exportLayout}
+          ref={exportRefLandscape}
+          layout="landscape"
+          categories={categories}
+          chartData={chartData}
+          editMode={editMode}
+          isTargetInitialized={isTargetInitialized}
+        />
+        <ExportView
+          ref={exportRefPortrait}
+          layout="portrait"
           categories={categories}
           chartData={chartData}
           editMode={editMode}
