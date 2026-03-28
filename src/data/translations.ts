@@ -16,8 +16,8 @@ export const translations = {
       environment: "物理的環境",
     },
     descriptions: {
-      job: "現在の職務内容、働きがい、将来のキャリアパスに対する満足度。",
-      money: "現在の収入、貯蓄、資産運用、経済的な安心感に対する満足度。",
+      job: "職務内容、働きがい、将来のキャリアパスに対する満足度。",
+      money: "収入、貯蓄、資産運用、経済的な安心感に対する満足度。",
       health: "身体的な調子、エネルギーレベル、精神的な健康状態、生活習慣。",
       family: "家族やパートナーとの関係性、家庭内の雰囲気、過ごす時間の質。",
       relationship: "友人、同僚、地域社会など、家族以外の人とのつながり。",
@@ -28,6 +28,8 @@ export const translations = {
     resetData: "データをリセット",
     syncTarget: "いまの状態に合わせる",
     resetConfirm: "すべてのデータをリセットして初期状態に戻しますか？",
+    savePcImage: "画像保存 (PC用)",
+    saveMobileImage: "画像保存 (スマホ用)",
   },
   en: {
     title: "Wheel of Life",
@@ -58,6 +60,8 @@ export const translations = {
     resetData: "Reset Data",
     syncTarget: "Sync Ideal to Current",
     resetConfirm: "Are you sure you want to reset all data to the initial state?",
+    savePcImage: "Save Image (PC)",
+    saveMobileImage: "Save Image (Mobile)",
   },
 } as const;
 

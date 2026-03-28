@@ -23,6 +23,7 @@ interface WheelChartProps {
   onInteract: (e: React.MouseEvent | React.TouchEvent) => void;
   editMode: EditMode;
   isTargetInitialized: boolean;
+  disableAnimation?: boolean;
 }
 
 export const WheelChart: React.FC<WheelChartProps> = ({
@@ -33,6 +34,7 @@ export const WheelChart: React.FC<WheelChartProps> = ({
   onInteract,
   editMode,
   isTargetInitialized,
+  disableAnimation = false,
 }) => {
   const { width, height, radius, maxScore } = config;
   const centerX = width / 2;
@@ -89,11 +91,12 @@ export const WheelChart: React.FC<WheelChartProps> = ({
               d={slice.path}
               initial={{ d: slice.path }}
               animate={{ d: slice.path }}
-              transition={{ type: "spring", stiffness: 300, damping: 25 }}
+              transition={disableAnimation ? { duration: 0 } : { type: "spring", stiffness: 300, damping: 25 }}
               fill={slice.color}
               fillOpacity={0.5}
               className={styles.currentPath}
               stroke="none"
+              style={disableAnimation ? { transition: 'none' } : undefined}
             />
           ))}
         </g>
@@ -107,12 +110,13 @@ export const WheelChart: React.FC<WheelChartProps> = ({
                 d={slice.targetPath}
                 initial={{ d: slice.targetPath }}
                 animate={{ d: slice.targetPath }}
-                transition={{ type: "spring", stiffness: 300, damping: 25 }}
+                transition={disableAnimation ? { duration: 0 } : { type: "spring", stiffness: 300, damping: 25 }}
                 fill="none"
                 stroke={slice.color}
                 strokeWidth="3"
                 strokeDasharray="4 4"
                 className={styles.targetPath}
+                style={disableAnimation ? { transition: 'none' } : undefined}
               />
             ))}
           </g>
