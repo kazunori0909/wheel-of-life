@@ -1,0 +1,21 @@
+@reference "tailwindcss";
+
+.main {
+  @apply min-h-screen bg-[#f4f7f6] flex flex-col items-center py-10 px-5 font-sans text-gray-800;
+}
+
+.header {
+  @apply w-full max-w-5xl flex justify-end;
+}
+
+.langButton {
+  @apply text-sm font-medium text-gray-500 hover:text-gray-800 transition-colors;
+}
+
+.title {
+  @apply text-3xl font-bold mb-8 text-slate-700;
+}
+
+.container {
+  @apply bg-white p-6 md:p-10 rounded-2xl shadow-lg w-full max-w-5xl flex flex-col-reverse md:flex-row gap-10 items-center justify-center;
+}

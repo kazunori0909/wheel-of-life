@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Category } from '@/types';
 import { EditMode } from '@/hooks/useWheelOfLife';
 import { useLanguage } from '@/context/LanguageContext';
+import styles from './ControlPanel.module.css';
 
 interface ControlPanelProps {
   categories: (Category & { targetScore: number })[];
@@ -26,37 +27,37 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({ categories, onScoreC
   };
 
   return (
-    <div className="flex flex-col gap-4 w-full min-w-[300px] flex-1">
-      <div className="flex bg-gray-100 p-1 rounded-lg mb-2">
+    <div className={styles.container}>
+      <div className={styles.modeSwitchContainer}>
         <button
           onClick={() => changeEditMode('current')}
-          className={`flex-1 py-2 px-4 rounded-md text-sm font-bold transition-all cursor-pointer ${
-            editMode === 'current' ? 'bg-white text-blue-600 shadow-sm' : 'text-gray-500 hover:text-gray-700'
+          className={`${styles.modeButton} ${
+            editMode === 'current' ? styles.modeButtonActive : styles.modeButtonInactive
           }`}
         >
           {modesDict.current}
         </button>
         <button
           onClick={() => changeEditMode('target')}
-          className={`flex-1 py-2 px-4 rounded-md text-sm font-bold transition-all cursor-pointer ${
-            editMode === 'target' ? 'bg-white text-blue-600 shadow-sm' : 'text-gray-500 hover:text-gray-700'
+          className={`${styles.modeButton} ${
+            editMode === 'target' ? styles.modeButtonActive : styles.modeButtonInactive
           }`}
         >
           {modesDict.ideal}
         </button>
       </div>
       {categories.map((cat, index) => (
-        <div key={cat.id} className="flex flex-col border-b border-gray-100 pb-1 touch-pan-y">
-          <div className="flex items-center justify-between">
+        <div key={cat.id} className={styles.categoryRow}>
+          <div className={styles.categoryRowHeader}>
             <button
               onClick={() => toggleInfo(cat.key)}
-              className="flex items-center gap-1 w-32 shrink-0 text-left group touch-manipulation"
+              className={`${styles.infoButton} group`}
               type="button"
             >
-              <span className="font-bold text-sm text-gray-700">
+              <span className={styles.infoButtonText}>
                 {categoriesDict[cat.key as keyof typeof categoriesDict]}
               </span>
-              <span className="text-gray-400 group-hover:text-gray-600 transition-colors">
+              <span className={styles.infoButtonIcon}>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -73,7 +74,7 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({ categories, onScoreC
                 </svg>
               </span>
             </button>
-            <div className="flex flex-1 items-center gap-2">
+            <div className={styles.sliderContainer}>
               <input
                 type="range"
                 min="0"
@@ -81,9 +82,9 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({ categories, onScoreC
                 step="1"
                 value={editMode === 'current' ? cat.score : cat.targetScore}
                 onChange={(e) => onScoreChange(index, Number(e.target.value))}
-                className="flex-1 cursor-pointer accent-blue-500 h-2 bg-gray-200 rounded-lg appearance-none touch-none"
+                className={styles.slider}
               />
-              <span className="font-bold text-blue-500 w-6 text-right">
+              <span className={styles.scoreValue}>
                 {editMode === 'current' ? cat.score : cat.targetScore}
               </span>
             </div>
@@ -94,9 +95,9 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({ categories, onScoreC
                 initial={{ height: 0, opacity: 0 }}
                 animate={{ height: 'auto', opacity: 1 }}
                 exit={{ height: 0, opacity: 0 }}
-                className="overflow-hidden"
+                className={styles.descriptionContainer}
               >
-                <p className="text-sm text-gray-500 py-2">
+                <p className={styles.descriptionText}>
                   {descriptionsDict[cat.key]}
                 </p>
               </motion.div>
@@ -105,18 +106,18 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({ categories, onScoreC
         </div>
       ))}
 
-      <div className="mt-4 flex justify-end gap-4">
+      <div className={styles.footer}>
         {editMode === 'target' && (
           <button
             onClick={syncTargetToCurrent}
-            className="text-xs text-blue-400 hover:text-blue-600 underline transition-colors"
+            className={styles.syncButton}
           >
             {t('syncTarget')}
           </button>
         )}
         <button
           onClick={resetData}
-          className="text-xs text-red-400 hover:text-red-600 underline transition-colors"
+          className={styles.resetButton}
         >
           {t('resetData')}
         </button>
