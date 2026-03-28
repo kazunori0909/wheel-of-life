@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import { ChartConfig } from '@/types';
 import { EditMode } from '@/hooks/useWheelOfLife';
 import { useLanguage } from '@/context/LanguageContext';
+import styles from './WheelChart.module.css';
 
 interface WheelChartProps {
   svgRef: React.RefObject<SVGSVGElement | null>;
@@ -41,11 +42,11 @@ export const WheelChart: React.FC<WheelChartProps> = ({
   const categoriesDict = t('categories');
 
   return (
-    <div className="w-full max-w-[500px] aspect-square relative select-none">
+    <div className={styles.container}>
       <svg
         ref={svgRef}
         viewBox={`0 0 ${width} ${height}`}
-        className="w-full h-full overflow-visible touch-pan-y"
+        className={styles.svgContent}
       >
         {/* ガイド（同心円） */}
         <g>
@@ -61,14 +62,14 @@ export const WheelChart: React.FC<WheelChartProps> = ({
                   fill="none"
                   stroke={isMid ? "#bbb" : "#e0e0e0"}
                   strokeDasharray={isMid ? "none" : "4,4"}
-                  className="pointer-events-none"
+                  className={styles.guideCircle}
                 />
                 {isMid && (
                   <text
                     x={centerX - r}
                     y={centerY}
                     dy="-5"
-                    className="text-sm font-bold fill-gray-400 pointer-events-none text-center"
+                    className={styles.guideText}
                     textAnchor="middle"
                     dominantBaseline="middle"
                   >
@@ -91,7 +92,7 @@ export const WheelChart: React.FC<WheelChartProps> = ({
               transition={{ type: "spring", stiffness: 300, damping: 25 }}
               fill={slice.color}
               fillOpacity={0.5}
-              className="transition-all duration-300 ease-out"
+              className={styles.currentPath}
               stroke="none"
             />
           ))}
@@ -111,7 +112,7 @@ export const WheelChart: React.FC<WheelChartProps> = ({
                 stroke={slice.color}
                 strokeWidth="3"
                 strokeDasharray="4 4"
-                className="pointer-events-none transition-all duration-300 ease-out"
+                className={styles.targetPath}
               />
             ))}
           </g>
@@ -124,7 +125,7 @@ export const WheelChart: React.FC<WheelChartProps> = ({
                     key={slice.id}
                     x={slice.labelPos.x}
                     y={slice.labelPos.y}
-                    className="text-[20px] font-medium fill-gray-600 pointer-events-none select-none"
+                    className={styles.labelText}
                     textAnchor="middle"
                     dominantBaseline="middle"
                 >
@@ -139,7 +140,7 @@ export const WheelChart: React.FC<WheelChartProps> = ({
           cy={centerY}
           r={radius + 30}
           fill="transparent"
-          className="cursor-pointer touch-none"
+          className={styles.hitArea}
           onMouseDown={onInteract}
           onTouchStart={(e) => onInteract(e)}
         />

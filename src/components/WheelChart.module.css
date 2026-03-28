@@ -1,0 +1,33 @@
+@reference "tailwindcss";
+
+.container {
+  @apply w-full max-w-[500px] aspect-square relative select-none;
+}
+
+.svgContent {
+  @apply w-full h-full overflow-visible touch-pan-y;
+}
+
+.guideCircle {
+  @apply pointer-events-none;
+}
+
+.guideText {
+  @apply text-sm font-bold fill-gray-400 pointer-events-none text-center;
+}
+
+.currentPath {
+  @apply transition-all duration-300 ease-out;
+}
+
+.targetPath {
+  @apply pointer-events-none transition-all duration-300 ease-out;
+}
+
+.labelText {
+  @apply text-[20px] font-medium fill-gray-600 pointer-events-none select-none;
+}
+
+.hitArea {
+  @apply cursor-pointer touch-none;
+}
