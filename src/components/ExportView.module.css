@@ -30,7 +30,7 @@
 }
 
 .title {
-  @apply text-4xl font-bold mb-6 text-slate-700 tracking-tight shrink-0;
+  @apply text-3xl font-bold mb-4 text-slate-700 tracking-tight shrink-0;
 }
 .portrait .title {
   @apply text-center text-5xl mb-4;
@@ -40,7 +40,7 @@
   @apply flex flex-col gap-4 overflow-hidden;
 }
 .landscape .descriptionList {
-  @apply overflow-y-hidden pr-4;
+  @apply gap-2 overflow-y-hidden pr-4;
 }
 .portrait .descriptionList {
   @apply grid grid-cols-2 gap-x-12 gap-y-6 w-full px-4;
@@ -70,7 +70,7 @@
   @apply flex items-center justify-center shrink-0;
 }
 .landscape .chartArea {
-  @apply w-[540px] h-[540px];
+  @apply w-[500px] h-[500px];
 }
 .portrait .chartArea {
   @apply w-[650px] h-[650px];
