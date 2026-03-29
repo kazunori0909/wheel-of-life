@@ -37,7 +37,7 @@ export const ExportView = forwardRef<HTMLDivElement, ExportViewProps>(({
       className={`${styles.container} ${isLandscape ? styles.landscape : styles.portrait}`}
       style={{
         width: isLandscape ? '1200px' : '800px',
-        height: isLandscape ? '630px' : '1200px',
+        height: isLandscape ? '675px' : '1200px',
       }}
     >
       <h1 className={styles.title}>{title}</h1>
