@@ -52,7 +52,7 @@ export const ExportView = forwardRef<HTMLDivElement, ExportViewProps>(({
                     <div className={styles.descHeader}>
                       <span className={styles.catName}>{categoriesDict[cat.key]}</span>
                       <span className={styles.catScore}>
-                        {cat.score} → {cat.targetScore}
+                        {cat.score === cat.targetScore ? cat.score : `${cat.score} → ${cat.targetScore}`}
                       </span>
                     </div>
                     <p className={styles.descText}>{descriptionsDict[cat.key]}</p>
@@ -94,7 +94,7 @@ export const ExportView = forwardRef<HTMLDivElement, ExportViewProps>(({
                     <div className={styles.descHeader}>
                       <span className={styles.catName}>{categoriesDict[cat.key]}</span>
                       <span className={styles.catScore}>
-                        {cat.score} → {cat.targetScore}
+                        {cat.score === cat.targetScore ? cat.score : `${cat.score} → ${cat.targetScore}`}
                       </span>
                     </div>
                     <p className={styles.descText}>{descriptionsDict[cat.key]}</p>
