@@ -118,21 +118,35 @@ export default function WheelOfLifePage() {
 
       {/* フッター：保存ボタン（右下） */}
       <div className={styles.footer}>
-        <div className={styles.actionButtons}>
-          <button
-            onClick={() => handleExport('landscape')}
-            disabled={isExporting}
-            className={styles.exportButton}
-          >
-            {t('savePcImage')}
-          </button>
-          <button
-            onClick={() => handleExport('portrait')}
-            disabled={isExporting}
-            className={styles.exportButton}
-          >
-            {t('saveMobileImage')}
-          </button>
+        <div className={styles.exportSection}>
+          <span className={styles.exportLabel}>{t('exportLabel')}</span>
+          <div className={styles.actionButtons}>
+            <button
+              onClick={() => handleExport('landscape')}
+              disabled={isExporting}
+              className={styles.iconButton}
+              title={t('savePcImage')}
+              aria-label={t('savePcImage')}
+            >
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <rect x="2" y="4" width="20" height="14" rx="2" ry="2" />
+                <line x1="8" y1="22" x2="16" y2="22" />
+                <line x1="12" y1="18" x2="12" y2="22" />
+              </svg>
+            </button>
+            <button
+              onClick={() => handleExport('portrait')}
+              disabled={isExporting}
+              className={styles.iconButton}
+              title={t('saveMobileImage')}
+              aria-label={t('saveMobileImage')}
+            >
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <rect x="5" y="2" width="14" height="20" rx="3" ry="3" />
+                <line x1="12" y1="18" x2="12.01" y2="18" />
+              </svg>
+            </button>
+          </div>
         </div>
       </div>
 
